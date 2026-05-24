@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Lab — Passive Voice & Modals</title>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --glass-bg: rgba(255,255,255,0.12);
+    --glass-bg-hover: rgba(255,255,255,0.18);
+    --glass-border: rgba(255,255,255,0.28);
+    --glass-border-strong: rgba(255,255,255,0.45);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 0 rgba(255,255,255,0.18) inset;
+    --glass-shadow-hover: 0 16px 48px rgba(0,0,0,0.25), 0 1.5px 0 rgba(255,255,255,0.22) inset;
+    --text-primary: rgba(255,255,255,0.95);
+    --text-secondary: rgba(255,255,255,0.6);
+    --text-tertiary: rgba(255,255,255,0.38);
+    --teal: #30d7a0;
+    --purple: #a78bfa;
+    --coral: #ff7f5e;
+    --blue: #60b4ff;
+    --amber: #fbbf24;
+    --green: #4ade80;
+    --red: #f87171;
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    background: #0d0f1e;
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* Deep dusk sky — base */
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(
+      170deg,
+      #0d0920 0%,
+      #14103a 25%,
+      #1a1040 50%,
+      #130e30 75%,
+      #0d0920 100%
+    );
+  }
+
+  /* Aurora layer — soft glowing bands */
+  .bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 110% 55% at 15% 18%, rgba(120,180,255,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 80% 45% at 85% 12%, rgba(180,130,255,0.16) 0%, transparent 50%),
+      radial-gradient(ellipse 90% 40% at 50% 85%, rgba(80,220,180,0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 5%  70%, rgba(150,100,255,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 70% 35% at 90% 65%, rgba(100,200,255,0.10) 0%, transparent 50%);
+    animation: aurora 24s ease-in-out infinite alternate;
+  }
+
+  @keyframes aurora {
+    0%   { opacity: 1;    transform: scale(1)    translateY(0px); }
+    33%  { opacity: 0.85; transform: scale(1.04) translateY(-14px); }
+    66%  { opacity: 0.95; transform: scale(0.97) translateY(8px); }
+    100% { opacity: 1;    transform: scale(1.02) translateY(-6px); }
+  }
+
+  /* Soft floating orbs — muted, dreamy */
+  .orb {
+    position: fixed; border-radius: 50%;
+    filter: blur(100px); pointer-events: none; z-index: 0;
+  }
+  .orb-1 {
+    width: 600px; height: 420px; opacity: 0.22;
+    background: radial-gradient(circle, #8ab4ff, transparent 65%);
+    top: -80px; left: -120px;
+    animation: float1 26s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 480px; height: 480px; opacity: 0.18;
+    background: radial-gradient(circle, #c084fc, transparent 65%);
+    top: 35%; right: -100px;
+    animation: float2 20s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 500px; height: 320px; opacity: 0.15;
+    background: radial-gradient(circle, #34d399, transparent 65%);
+    bottom: -40px; left: 25%;
+    animation: float3 28s ease-in-out infinite;
+  }
+  .orb-4 {
+    width: 300px; height: 300px; opacity: 0.12;
+    background: radial-gradient(circle, #f9a8d4, transparent 65%);
+    top: 60%; left: 5%;
+    animation: float2 22s 4s ease-in-out infinite;
+  }
+
+  @keyframes float1 { 0%,100%{transform:translate(0,0)}   50%{transform:translate(50px, 35px)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0)}   50%{transform:translate(-45px,-55px)} }
+  @keyframes float3 { 0%,100%{transform:translate(0,0)}   50%{transform:translate(35px,-30px)} }
+
+  /* Layout */
+  .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 60px 24px 100px; }
+
+  /* Hero */
+  .hero { text-align: center; margin-bottom: 52px; animation: fadeUp 0.7s ease both; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--glass-bg); border: 0.5px solid var(--glass-border);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 999px; padding: 6px 16px; font-size: 12px;
+    color: var(--text-secondary); margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15), 0 1px 0 rgba(255,255,255,0.12) inset;
+  }
+  .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); display: inline-block; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 62px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 50%, #a78bfa 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 14px;
+  }
+  .hero p { font-size: 17px; color: var(--text-secondary); font-weight: 300; letter-spacing: -0.01em; }
+
+  /* Tab bar */
+  .tab-bar {
+    display: flex; gap: 6px; justify-content: center; margin-bottom: 36px;
+    background: rgba(255,255,255,0.07); backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 0.5px solid var(--glass-border); border-radius: 999px; padding: 5px;
+    width: fit-content; margin-left: auto; margin-right: auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.1) inset;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .tab {
+    padding: 10px 26px; border-radius: 999px; border: none; cursor: pointer;
+    font-size: 14px; font-weight: 500; font-family: inherit; letter-spacing: -0.01em;
+    color: var(--text-secondary); background: transparent; transition: all 0.25s ease;
+  }
+  .tab.active {
+    background: rgba(255,255,255,0.14); color: var(--text-primary);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.2) inset;
+    border: 0.5px solid rgba(255,255,255,0.2);
+  }
+  .tab:hover:not(.active) { color: var(--text-primary); background: rgba(255,255,255,0.07); }
+
+  .panel { display: none; animation: fadeUp 0.4s ease both; }
+  .panel.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Glass card */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(28px) saturate(180%) brightness(1.08);
+    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.08);
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  }
+  .glass:hover {
+    box-shadow: var(--glass-shadow-hover); border-color: var(--glass-border-strong);
+  }
+
+  /* Section label */
+  .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 14px; }
+
+  /* Tip */
+  .tip {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: rgba(96,180,255,0.08); border: 0.5px solid rgba(96,180,255,0.25);
+    border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 24px;
+  }
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .tip p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .tip p strong { color: var(--text-primary); font-weight: 500; }
+
+  /* Compare grid */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .compare-card { padding: 18px 20px; border-radius: var(--radius-md); border: 0.5px solid; }
+  .c-active { background: rgba(48,215,160,0.08); border-color: rgba(48,215,160,0.3); }
+  .c-passive { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.3); }
+  .compare-card .clabel { font-size: 11px; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase; }
+  .c-active .clabel { color: var(--teal); }
+  .c-passive .clabel { color: var(--purple); }
+  .compare-card .ctext { font-size: 15px; color: var(--text-primary); line-height: 1.5; }
+  .compare-card .ctext strong { font-weight: 600; }
+
+  /* Formula box */
+  .formula-box {
+    padding: 20px 24px; border-radius: var(--radius-md); margin-bottom: 28px;
+    background: rgba(255,255,255,0.06); border: 0.5px solid var(--glass-border);
+  }
+  .formula-row { font-size: 15px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.8; }
+  .f-be { color: var(--teal); font-weight: 500; }
+  .f-pp { color: var(--purple); font-weight: 500; }
+  .f-by { color: var(--coral); font-weight: 500; }
+  .f-modal { color: var(--blue); font-weight: 500; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-secondary); }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Tense grid */
+  .tense-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 10px; margin-bottom: 28px; }
+  .tense-card {
+    padding: 16px 18px; border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.06); border: 0.5px solid var(--glass-border);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .tense-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+  .tname { font-size: 11px; font-weight: 500; letter-spacing: 0.05em; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 7px; }
+  .tformula { font-size: 13px; font-family: 'SF Mono', 'Fira Code', monospace; margin-bottom: 8px; }
+  .texample { font-size: 13px; color: var(--text-secondary); font-style: italic; }
+  .texample strong { color: var(--teal); font-style: normal; font-weight: 500; }
+
+  /* Transform demo */
+  .demo-box { padding: 22px 24px; border-radius: var(--radius-lg); margin-bottom: 28px; background: rgba(255,255,255,0.05); border: 0.5px solid var(--glass-border); }
+  .demo-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+  .demo-tab {
+    padding: 6px 16px; border-radius: 999px; border: 0.5px solid rgba(255,255,255,0.12);
+    font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer;
+    color: var(--text-secondary); background: transparent; transition: all 0.2s;
+  }
+  .demo-tab.active { background: rgba(255,255,255,0.14); color: var(--text-primary); border-color: rgba(255,255,255,0.25); }
+  .demo-tab:hover:not(.active) { background: rgba(255,255,255,0.07); color: var(--text-primary); }
+
+  /* Modal cards */
+  .modal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 10px; margin-bottom: 28px; }
+  .modal-card {
+    padding: 18px 20px; border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.06); border: 0.5px solid var(--glass-border);
+    transition: all 0.2s;
+  }
+  .modal-card:hover { background: rgba(255,255,255,0.11); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+  .mword { font-size: 20px; font-weight: 600; color: var(--blue); letter-spacing: -0.02em; margin-bottom: 4px; }
+  .mmeaning { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; }
+  .mex { font-size: 13px; color: var(--text-secondary); font-style: italic; margin-bottom: 6px; }
+  .mex strong { color: var(--text-primary); font-style: normal; font-weight: 500; }
+  .mpassive { font-size: 12px; color: var(--purple); }
+
+  /* Mistake box */
+  .mistake-wrap { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .mistake-card { padding: 14px 18px; border-radius: var(--radius-md); border: 0.5px solid; }
+  .m-wrong { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.3); }
+  .m-right { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.3); }
+  .mlabel { font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+  .m-wrong .mlabel { color: var(--red); }
+  .m-right .mlabel { color: var(--green); }
+  .mtext { font-size: 14px; color: var(--text-primary); }
+
+  /* Examples inline grid */
+  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+  .ex-card { padding: 14px 16px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.05); border: 0.5px solid var(--glass-border); }
+  .ex-label { font-size: 11px; font-weight: 500; color: var(--blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .ex-text { font-size: 14px; color: var(--text-primary); }
+  .ex-text strong { color: var(--teal); font-weight: 500; }
+
+  /* Quiz */
+  .score-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+  .score-num { font-size: 38px; font-weight: 600; letter-spacing: -0.04em; background: linear-gradient(135deg, #fff, var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .score-sub { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+  .reset-btn {
+    margin-left: auto; padding: 9px 20px; border-radius: 999px;
+    border: 0.5px solid var(--glass-border); background: var(--glass-bg);
+    font-size: 13px; font-weight: 500; font-family: inherit;
+    color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .reset-btn:hover { background: var(--glass-bg-hover); color: var(--text-primary); }
+
+  .quiz-wrap { display: flex; flex-direction: column; gap: 14px; }
+  .quiz-item { padding: 22px 24px; border-radius: var(--radius-lg); border: 0.5px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); }
+  .qnum { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px; }
+  .qtext { font-size: 15px; color: var(--text-primary); line-height: 1.55; margin-bottom: 18px; }
+  .qopts { display: flex; flex-direction: column; gap: 8px; }
+  .qbtn {
+    padding: 12px 16px; border-radius: var(--radius-sm); border: 0.5px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05); color: var(--text-primary); font-size: 14px;
+    font-family: inherit; cursor: pointer; text-align: left; transition: all 0.2s;
+  }
+  .qbtn:hover:not(:disabled) { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  .qbtn.correct { background: rgba(48,215,160,0.12); border-color: rgba(48,215,160,0.4); color: var(--teal); }
+  .qbtn.wrong { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.35); color: var(--red); }
+  .qbtn:disabled { cursor: default; }
+  .qfb { font-size: 13px; margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-sm); line-height: 1.5; display: none; }
+  .qfb.show { display: block; }
+  .qfb.ok { background: rgba(48,215,160,0.1); color: rgba(48,215,160,0.9); border: 0.5px solid rgba(48,215,160,0.25); }
+  .qfb.err { background: rgba(248,113,113,0.1); color: rgba(248,113,113,0.9); border: 0.5px solid rgba(248,113,113,0.25); }
+
+  /* Progress bar */
+  .progress-wrap { margin-left: auto; flex: 1; max-width: 200px; }
+  .progress-track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--purple), var(--teal)); transition: width 0.4s ease; }
+
+  @media (max-width: 560px) {
+    .compare, .examples-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; }
+    .tab { padding: 9px 16px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="orb orb-4"></div>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> English Grammar · C1 Level</div>
+    <h1>Passive Voice<br>& Modal Verbs</h1>
+    <p>Master two of English's most powerful grammatical tools</p>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab active" onclick="showTab('passive',this)">Passive Voice</button>
+    <button class="tab" onclick="showTab('modals',this)">Modal Verbs</button>
+    <button class="tab" onclick="showTab('quiz',this)">Quiz <span id="badge"></span></button>
+  </div>
+
+  <!-- PASSIVE VOICE -->
+  <div id="tab-passive" class="panel active">
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <p>Use passive when the <strong>action matters more than who did it</strong>, the doer is unknown, or you want a formal / academic tone.</p>
+    </div>
+
+    <p class="sec-label">Active vs Passive</p>
+    <div class="compare">
+      <div class="compare-card c-active">
+        <div class="clabel">Active — subject acts</div>
+        <div class="ctext">The chef <strong>cooked</strong> the meal.</div>
+      </div>
+      <div class="compare-card c-passive">
+        <div class="clabel">Passive — subject receives</div>
+        <div class="ctext">The meal <strong>was cooked</strong> by the chef.</div>
+      </div>
+    </div>
+
+    <p class="sec-label">The formula</p>
+    <div class="formula-box glass">
+      <div class="formula-row">
+        Subject &nbsp;+&nbsp; <span class="f-be">to be</span> (conjugated) &nbsp;+&nbsp; <span class="f-pp">past participle</span> &nbsp;+&nbsp; <span class="f-by">[by + agent]</span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>to be — changes with tense</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>V3 — past participle</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div>by + agent — optional</div>
+      </div>
+    </div>
+
+    <p class="sec-label">All tenses at a glance</p>
+    <div class="tense-grid">
+      <div class="tense-card glass">
+        <div class="tname">Present simple</div>
+        <div class="tformula"><span class="f-be">is/are</span> + <span class="f-pp">V3</span></div>
+        <div class="texample">The report <strong>is written</strong> daily.</div>
+      </div>
+      <div class="tense-card glass">
+        <div class="tname">Past simple</div>
+        <div class="tformula"><span class="f-be">was/were</span> + <span class="f-pp">V3</span></div>
+        <div class="texample">The door <strong>was opened</strong>.</div>
+      </div>
+      <div class="tense-card glass">
+        <div class="tname">Future simple</div>
+        <div class="tformula"><span class="f-be">will be</span> + <span class="f-pp">V3</span></div>
+        <div class="texample">The cake <strong>will be eaten</strong>.</div>
+      </div>
+      <div class="tense-card glass">
+        <div class="tname">Present perfect</div>
+        <div class="tformula"><span class="f-be">has/have been</span> + <span class="f-pp">V3</span></div>
+        <div class="texample">It <strong>has been fixed</strong>.</div>
+      </div>
+      <div class="tense-card glass">
+        <div class="tname">Past perfect</div>
+        <div class="tformula"><span class="f-be">had been</span> + <span class="f-pp">V3</span></div>
+        <div class="texample">It <strong>had been stolen</strong>.</div>
+      </div>
+      <div class="tense-card glass">
+        <div class="tname">Present continuous</div>
+        <div class="tformula"><span class="f-be">is/are being</span> + <span class="f-pp">V3</span></div>
+        <div class="texample">It <strong>is being repaired</strong>.</div>
+      </div>
+    </div>
+
+    <p class="sec-label">Active → Passive transformer</p>
+    <div class="demo-box glass">
+      <div style="font-size:13px; color:var(--text-tertiary); margin-bottom:14px;">Tap a tense to see the transformation</div>
+      <div class="demo-tabs">
+        <button class="demo-tab active" onclick="setDemo(0,this)">Present</button>
+        <button class="demo-tab" onclick="setDemo(1,this)">Past</button>
+        <button class="demo-tab" onclick="setDemo(2,this)">Future</button>
+        <button class="demo-tab" onclick="setDemo(3,this)">Pres. perfect</button>
+        <button class="demo-tab" onclick="setDemo(4,this)">Past perfect</button>
+      </div>
+      <div class="compare">
+        <div class="compare-card c-active">
+          <div class="clabel">Active</div>
+          <div class="ctext" id="demo-a">Scientists <strong>study</strong> the data.</div>
+        </div>
+        <div class="compare-card c-passive">
+          <div class="clabel">Passive</div>
+          <div class="ctext" id="demo-p">The data <strong>is studied</strong> by scientists.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL VERBS -->
+  <div id="tab-modals" class="panel">
+
+    <div class="tip">
+      <div class="tip-icon">🔑</div>
+      <p>Modals are <strong>auxiliary verbs</strong> expressing ability, possibility, obligation, or permission. They never change form and always precede a bare infinitive.</p>
+    </div>
+
+    <p class="sec-label">Core modal verbs</p>
+    <div class="modal-grid">
+      <div class="modal-card glass">
+        <div class="mword">can / could</div>
+        <div class="mmeaning">Ability · Permission · Possibility</div>
+        <div class="mex"><strong>She can speak Italian.</strong></div>
+        <div class="mpassive">Passive: It can be done.</div>
+      </div>
+      <div class="modal-card glass">
+        <div class="mword">must</div>
+        <div class="mmeaning">Strong obligation · Certainty</div>
+        <div class="mex"><strong>You must wear a seatbelt.</strong></div>
+        <div class="mpassive">Passive: It must be signed.</div>
+      </div>
+      <div class="modal-card glass">
+        <div class="mword">should</div>
+        <div class="mmeaning">Advice · Expectation</div>
+        <div class="mex"><strong>You should rest today.</strong></div>
+        <div class="mpassive">Passive: It should be checked.</div>
+      </div>
+      <div class="modal-card glass">
+        <div class="mword">may / might</div>
+        <div class="mmeaning">Possibility · Formal permission</div>
+        <div class="mex"><strong>It might rain tomorrow.</strong></div>
+        <div class="mpassive">Passive: It may be delayed.</div>
+      </div>
+      <div class="modal-card glass">
+        <div class="mword">will / would</div>
+        <div class="mmeaning">Future · Conditional</div>
+        <div class="mex"><strong>I will call you later.</strong></div>
+        <div class="mpassive">Passive: You will be called.</div>
+      </div>
+      <div class="modal-card glass">
+        <div class="mword">have to</div>
+        <div class="mmeaning">External obligation</div>
+        <div class="mex"><strong>We have to leave now.</strong></div>
+        <div class="mpassive">Passive: It has to be paid.</div>
+      </div>
+    </div>
+
+    <p class="sec-label">Modal + passive formula</p>
+    <div class="formula-box glass">
+      <div class="formula-row">
+        Subject &nbsp;+&nbsp; <span class="f-modal">modal</span> &nbsp;+&nbsp; <span class="f-be">be</span> &nbsp;+&nbsp; <span class="f-pp">past participle</span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>modal stays unchanged</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>be — always bare infinitive</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>V3 — past participle</div>
+      </div>
+    </div>
+
+    <p class="sec-label">Examples in context</p>
+    <div class="examples-grid">
+      <div class="ex-card glass">
+        <div class="ex-label">can</div>
+        <div class="ex-text">This form <strong>can be submitted</strong> online.</div>
+      </div>
+      <div class="ex-card glass">
+        <div class="ex-label">must</div>
+        <div class="ex-text">All passports <strong>must be checked</strong>.</div>
+      </div>
+      <div class="ex-card glass">
+        <div class="ex-label">should</div>
+        <div class="ex-text">Errors <strong>should be reported</strong> immediately.</div>
+      </div>
+      <div class="ex-card glass">
+        <div class="ex-label">might</div>
+        <div class="ex-text">The meeting <strong>might be postponed</strong>.</div>
+      </div>
+    </div>
+
+    <p class="sec-label">Common mistakes</p>
+    <div class="mistake-wrap">
+      <div class="mistake-card m-wrong">
+        <div class="mlabel">✗ Wrong</div>
+        <div class="mtext">It must <em>is done</em> today. &nbsp;/&nbsp; It should <em>be did</em>.</div>
+      </div>
+      <div class="mistake-card m-right">
+        <div class="mlabel">✓ Correct</div>
+        <div class="mtext">It must <strong>be done</strong> today. &nbsp;/&nbsp; It should <strong>be done</strong>.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QUIZ -->
+  <div id="tab-quiz" class="panel">
+
+    <div class="score-bar">
+      <div>
+        <div class="score-num"><span id="sc-c">0</span><span style="font-size:20px;opacity:0.4"> / </span><span id="sc-t" style="font-size:20px; opacity:0.7">0</span></div>
+        <div class="score-sub">correct answers</div>
+      </div>
+      <div class="progress-wrap">
+        <div style="font-size:11px; color:var(--text-tertiary); margin-bottom:6px; text-align:right;" id="prog-label">0 of 8 answered</div>
+        <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+      <button class="reset-btn" onclick="resetQuiz()">↺ Reset</button>
+    </div>
+
+    <div class="quiz-wrap" id="quiz-wrap"></div>
+  </div>
+
+</div>
+
+<script>
+const demos = [
+  { a: 'Scientists <strong>study</strong> the data.', p: 'The data <strong>is studied</strong> by scientists.' },
+  { a: 'Someone <strong>stole</strong> the bike.', p: 'The bike <strong>was stolen</strong>.' },
+  { a: 'They <strong>will announce</strong> the results.', p: 'The results <strong>will be announced</strong>.' },
+  { a: 'The team <strong>has completed</strong> the project.', p: 'The project <strong>has been completed</strong>.' },
+  { a: 'The police <strong>had arrested</strong> the suspect.', p: 'The suspect <strong>had been arrested</strong> by the police.' }
+];
+
+function setDemo(i, btn) {
+  document.querySelectorAll('.demo-tab').forEach((b,j) => b.classList.toggle('active', j===i));
+  document.getElementById('demo-a').innerHTML = demos[i].a;
+  document.getElementById('demo-p').innerHTML = demos[i].p;
+}
+
+const questions = [
+  { q: 'Choose the correct passive form: "Someone painted the house last year."', opts: ['The house is painted last year.','The house was painted last year.','The house were painted last year.','The house has paint last year.'], ans: 1, exp: 'Past simple passive = was/were + V3. "House" is singular → was painted.' },
+  { q: 'Which sentence uses modal + passive correctly?', opts: ['The report must written today.','The report must be write today.','The report must be written today.','The report be must written today.'], ans: 2, exp: 'Modal passive = modal + be + V3. Must be written ✓' },
+  { q: 'Transform to passive: "They are building a new bridge."', opts: ['A new bridge is been built.','A new bridge is being built.','A new bridge was being built.','A new bridge has been built.'], ans: 1, exp: 'Present continuous passive = is/are + being + V3.' },
+  { q: 'Fill the gap: "The documents _____ (should / already / lose)."', opts: ['should be already lost','should already be lost','should already been lost','should be already lose'], ans: 1, exp: 'Adverbs go between the modal and "be": should already be lost.' },
+  { q: 'Choose the present perfect passive of: "Hackers have leaked the data."', opts: ['The data has been leaked.','The data was leaked.','The data is leaked.','The data had been leaked.'], ans: 0, exp: 'Present perfect passive = has/have been + V3 → has been leaked.' },
+  { q: 'Which sentence is NOT passive voice?', opts: ['The window was broken.','She has been promoted.','He is driving fast.','Mistakes were made.'], ans: 2, exp: '"Is driving" is present continuous active — the subject performs the action.' },
+  { q: 'Modal + passive: "We can solve this problem."', opts: ['This problem can be solved.','This problem can solved.','This problem could be solve.','This problem can been solved.'], ans: 0, exp: 'Can + be + V3 → can be solved. Modal stays unchanged.' },
+  { q: 'Which sentence expresses ADVICE in passive?', opts: ['The brakes must be checked.','The brakes should be checked.','The brakes might be checked.','The brakes can be checked.'], ans: 1, exp: '"Should" expresses advice. Passive: should be checked.' }
+];
+
+let answered = new Array(questions.length).fill(null);
+
+function renderQuiz() {
+  const correct = answered.filter(a => a === true).length;
+  const total = answered.filter(a => a !== null).length;
+  document.getElementById('sc-c').textContent = correct;
+  document.getElementById('sc-t').textContent = total;
+  document.getElementById('prog-label').textContent = total + ' of ' + questions.length + ' answered';
+  document.getElementById('prog-fill').style.width = (total / questions.length * 100) + '%';
+  const badge = document.getElementById('badge');
+  badge.textContent = total > 0 ? ' · ' + correct + '/' + questions.length : '';
+
+  const wrap = document.getElementById('quiz-wrap');
+  wrap.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const done = answered[qi] !== null;
+    const div = document.createElement('div');
+    div.className = 'quiz-item glass';
+    div.innerHTML = `
+      <div class="qnum">Question ${qi+1} of ${questions.length}</div>
+      <div class="qtext">${q.q}</div>
+      <div class="qopts">${q.opts.map((o,oi) => {
+        let cls = 'qbtn';
+        if(done && oi===q.ans) cls += ' correct';
+        return `<button class="${cls}" ${done?'disabled':''} data-oi="${oi}" onclick="answer(${qi},${oi},this)">${o}</button>`;
+      }).join('')}</div>
+      <div id="qfb-${qi}" class="qfb ${done?(answered[qi]?'show ok':'show err'):''}">${done?(answered[qi]?'✓ Correct! ':'✗ Not quite. ')+q.exp:''}</div>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function answer(qi, oi, btn) {
+  const q = questions[qi];
+  const correct = oi === q.ans;
+  answered[qi] = correct;
+  const parent = btn.closest('.quiz-item');
+  parent.querySelectorAll('.qbtn').forEach((b, i) => {
+    b.disabled = true;
+    if(i === q.ans) b.classList.add('correct');
+    if(!correct && i === oi) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('qfb-' + qi);
+  fb.textContent = (correct ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'qfb show ' + (correct ? 'ok' : 'err');
+  const c = answered.filter(a => a === true).length;
+  const t = answered.filter(a => a !== null).length;
+  document.getElementById('sc-c').textContent = c;
+  document.getElementById('sc-t').textContent = t;
+  document.getElementById('prog-label').textContent = t + ' of ' + questions.length + ' answered';
+  document.getElementById('prog-fill').style.width = (t / questions.length * 100) + '%';
+  document.getElementById('badge').textContent = ' · ' + c + '/' + questions.length;
+}
+
+function resetQuiz() {
+  answered = new Array(questions.length).fill(null);
+  document.getElementById('badge').textContent = '';
+  renderQuiz();
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
